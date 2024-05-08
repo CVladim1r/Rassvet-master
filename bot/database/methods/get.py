@@ -1,6 +1,6 @@
 import mysql.connector # type: ignore
 import logging
-from ..db_connector import create_connection
+from ..db_connector import create_connection, DB_CONFIG
 import json
 
 # Функция для получения списка дней рождения пользователей

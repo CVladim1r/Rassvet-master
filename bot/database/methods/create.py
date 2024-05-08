@@ -1,12 +1,14 @@
 import mysql.connector # type: ignore
 import logging
-from ..db_connector import create_connection
+from ..db_connector import create_connection, DB_CONFIG
 import json
+
+
 
 # Функция для сохранения данных пользователя в базе данных
 async def save_user_data(tgid, birthday, username, location):
     try:
-        conn = mysql.connector.connect(**DB_CONFIG)
+        conn = create_connection()
         cursor = conn.cursor()
 
         query = "INSERT INTO users (tgid, birthday, tgusername, location) VALUES (%s, %s, %s, %s)"

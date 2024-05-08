@@ -7,6 +7,7 @@ from aiogram.types import ParseMode
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
+from database import *
 
 # Инициализация хранилища FSM
 storage = MemoryStorage()
@@ -100,40 +101,6 @@ async def cmd_list_birthdays(message: types.Message):
         response = "Список дней рождения пуст."
     await message.reply(response)
 
-
-# Функция для сохранения данных пользователя в базе данных
-async def save_user_data(tgid, birthday, username, location):
-    try:
-        conn = mysql.connector.connect(**DB_CONFIG)
-        cursor = conn.cursor()
-
-        query = "INSERT INTO users (tgid, birthday, tgusername, location) VALUES (%s, %s, %s, %s)"
-        cursor.execute(query, (tgid, birthday, username, location))
-
-        conn.commit()
-    except mysql.connector.Error as err:
-        logging.error("Error while saving user data: %s", err)
-    finally:
-        cursor.close()
-        conn.close()
-
-
-# Функция для получения списка дней рождения пользователей
-async def get_birthdays():
-    try:
-        conn = mysql.connector.connect(**DB_CONFIG)
-        cursor = conn.cursor(dictionary=True)
-
-        query = "SELECT tgusername, birthday FROM users"
-        cursor.execute(query)
-
-        return cursor.fetchall()
-    except mysql.connector.Error as err:
-        logging.error("Error while getting birthdays: %s", err)
-        return None
-    finally:
-        cursor.close()
-        conn.close()
 
 
 # Запуск бота
