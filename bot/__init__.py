@@ -1,1 +1,1 @@
-from .main import start_tgbot
+from .test_bot import start_tgbot
